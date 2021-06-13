@@ -124,25 +124,25 @@ keys = [
     Key([mod], "f", lazy.window.toggle_fullscreen(), desc="Toggle fullscreen"),
 
     # Volume control
-    Key([mod, alt, 'control'], "k", lazy.spawn('/bin/vcm up 5'), desc="Volume up"),
-    Key([mod, alt, 'control'], "j", lazy.spawn('/bin/vcm down 5'), desc="Volume down"),
-    Key([mod, alt, 'control'], "m", lazy.spawn('/bin/vcm toggle'), desc="Mute volume"),
+    Key([mod, alt, 'control'], "k", lazy.spawn('amixer -D pulse sset Master 5%+'), desc="Volume up"),
+    Key([mod, alt, 'control'], "j", lazy.spawn('amixer -D pulse sset Master 5%-'), desc="Volume down"),
+    Key([mod, alt, 'control'], "m", lazy.spawn('amixer -D pulse sset Master toggle'), desc="Mute volume"),
     Key(
         [],
         "XF86AudioRaiseVolume",
-        lazy.spawn("/bin/vcm up"),
+        lazy.spawn("amixer -D pulse sset Master 10%+"),
         desc="Increase volume",
     ),
     Key(
         [],
         "XF86AudioLowerVolume",
-        lazy.spawn("/bin/vcm down"),
+        lazy.spawn("amixer -D pulse sset Master 5%-"),
         desc="Decrease volume",
     ),
     Key(
         [],
         "XF86AudioMute",
-        lazy.spawn("/bin/vcm toggle"),
+        lazy.spawn("amixer -D pulse sset Master toggle"),
         desc="Toggle mute",
     ),
     Key([], "XF86AudioNext", lazy.spawn("playerctl next"), desc="Next"),
