@@ -44,17 +44,18 @@ logger.warning("Error")
 terminal = 'st'
 terminal_session = f'{terminal} -e tmux'
 file = f'{terminal} -e vifm'
-otherfilemanager = 'nautilus'
+otherfilemanager = 'nautilus -w'
 browser = 'firefox'
 incognitobrowser = 'firefox --private-window'
 notes = f'{terminal} -e joplin'
 dmenu = 'dmenu_run -i -fn "Ploni ML V2 AAA:bold:pixelsize=18"'
 torrent = 'dmenu-torrent'
+create_doc = '/home/yoavkonak/.scripts/create-latex-document.sh'
 password = 'dmenu_pass 18'
 screenshot = 'flameshot gui -p /home/yoavkonak/'
 social = 'signal-desktop'
 music = f'{terminal} -e ncmpcpp'
-top = f'{terminal} -e ytop'
+top = f'{terminal} -e gotop'
 lock = '/home/yoavkonak/.scripts/lock.sh'
 fancylock = 'i3lock-fancy-dualmonitor -f Ploni-ML-v2-AAA-Light'
 toggle_hebrew = '~/.config/qtile/scripts/toggle_hebrew.sh'
@@ -108,6 +109,9 @@ keys = [
         desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal_session), desc=f'Launch terminal: {terminal}'),
     Key([mod], "t", lazy.spawn(terminal_session), desc=f'Launch terminal: {terminal}'),
+    Key([mod, "shift"], "t", lazy.spawn(f'bash -c \"{terminal} -e $SHELL\"')),
+    Key([mod, "control", "shift"], "t", lazy.spawn(f'bash -c \"CMD=$(dmenu_path | dmenu -i -fn \'Ploni ML V2 AAA:bold:pixelsize=18\' -p \'What command do you want to run? \'); [ -z $CMD ] || {terminal} -e $CMD\"'), desc=f'Launch terminal: {terminal}'),
+    # Key([mod, "control", "shift"], "t", lazy.spawn(f'bash -c \"CMD=$(dmenu_path | dmenu -i -fn \'Ploni ML V2 AAA:bold:pixelsize=18\' -p \'What command do you want to run? \'); {terminal} -e $CMD\"'), desc=f'Launch terminal: {terminal}'),
 
     # Toggle between different layouts as defined below
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
@@ -186,6 +190,9 @@ keys = [
     
     # Torrent
     Key([mod], "g", lazy.spawn(torrent), desc="Torrent"),
+    
+    # Create LaTeX documents
+    Key([mod], "d", lazy.spawn(create_doc), desc="Create LaTeX documents"),
 
 ]
 
@@ -324,7 +331,7 @@ screens = [
 
                 # Clock
                 widget.TextBox("Current time:", foreground=fg_color),
-                widget.Clock(format='%d/%m/%Y %a %I:%M:%S %p'),
+                widget.Clock(format='%I:%M:%S %p %a %d/%m/%Y'),
 
                 # Layout
                 widget.Sep(),
@@ -378,7 +385,7 @@ mouse = [
 ############################################### BLUE ##########################################
 # FAVORITE
 #####    wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/vincentiu-solomon-Z4wF0h47fy8-unsplash.jpg'
-wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # yellow
+wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # Yellow
 #wallpaper_choice = '~/.config/qtile/Wallpapers/elena-prokofyeva-NDuPLKYRXQU-unsplash.jpg' # blue
 
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/leon-overweel-GZd3l4Yxdxs-unsplash.jpg'
@@ -386,11 +393,15 @@ wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # yell
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/jeremy-bishop-9pRjY4d7nJE-unsplash.jpg'
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/krisztian-tabori-nZGNVOvEYio-unsplash.jpg'
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/mar-bustos-ARVFsI-32Uk-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/quino-al-JFeOy62yjXk-unsplash.jpg'
+wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/quino-al-JFeOy62yjXk-unsplash.jpg'
 ## Purple
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/kai-oberhauser-BKAaLmT0tIs-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arch.png'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arunas-naujokas-wWeu12lTDbU-unsplash.jpg'
+# wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/kai-oberhauser-BKAaLmT0tIs-unsplash.jpg'
+# wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arch.png'
+# wallpaper_choice = '~/.config/qtile/Wallpapers/arch_dracula.png'
+# wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arunas-naujokas-wWeu12lTDbU-unsplash.jpg'
+#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/oleg-chursin-vaPoJZB9Mzg-unsplash.jpg'
+# wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/james-donovan-kFHz9Xh3PPU-unsplash.jpg'
+wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/waranont-joe-T7qyLNPwgKA-unsplash.jpg'
 
 os.system('feh --bg-fill ' + wallpaper_choice)
 
