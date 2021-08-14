@@ -73,8 +73,10 @@ keys = [
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
 
+    #Key([mod], "space", lazy.widget["keyboardlayout"].next_keyboard(), desc="Next keyboard layout."),
     Key([mod], "space", lazy.spawn(toggle_hebrew),
-        desc="Toggle hebrew"),
+        lazy.widget["keyboardlayout"].next_keyboard(),
+        desc="Change keyboard layout"),
     
     # Add alt+tab functionality
     Key([alt], "Tab", lazy.layout.next(), 
@@ -233,20 +235,65 @@ keys.extend(
     ]
 )
 
-groups = [Group(i) for i in "123456789"]
+#groups = [Group(i) for i in "123456789"]
+#
+#for i in groups:
+#    keys.extend([
+#        # mod1 + letter of group = switch to group
+#        Key([mod], i.name, lazy.group[i.name].toscreen(),
+#            desc="Switch to group {}".format(i.name)),
+#
+#        # mod1 + shift + letter of group = switch to & move focused window to group
+#        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=False),
+#            desc="Switch to & move focused window to group {}".format(i.name)),
+#        Key([mod, "control", "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
+#            desc="Switch to & move focused window to group {}".format(i.name)),
+#    ])
 
-for i in groups:
-    keys.extend([
-        # mod1 + letter of group = switch to group
-        Key([mod], i.name, lazy.group[i.name].toscreen(),
-            desc="Switch to group {}".format(i.name)),
+group_names = [("", {'layout': 'columns'}),
+               ("", {'layout': 'columns'}),
+               ("", {'layout': 'columns'}),
+               #("", {'layout': 'columns'}),
+               ("", {'layout': 'columns'}),
+               #("", {'layout': 'columns'}),
+               ("ﱮ", {'layout': 'columns'}),
+               ("ﱘ", {'layout': 'columns'}),
+               ("", {'layout': 'columns'}),
+               #("", {'layout': 'columns'}),
+               ("", {'layout': 'columns'}),
+               #("", {'layout': 'columns'}),
+               ("", {'layout': 'columns'})]
 
-        # mod1 + shift + letter of group = switch to & move focused window to group
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=False),
-            desc="Switch to & move focused window to group {}".format(i.name)),
-        Key([mod, "control", "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
-            desc="Switch to & move focused window to group {}".format(i.name)),
-    ])
+#group_names = [("1", {'layout': 'columns'}),
+#               ("2", {'layout': 'columns'}),
+#               ("3", {'layout': 'columns'}),
+#               ("4", {'layout': 'columns'}),
+#               ("5", {'layout': 'columns'}),
+#               ("6", {'layout': 'columns'}),
+#               ("7", {'layout': 'columns'}),
+#               ("8", {'layout': 'columns'}),
+#               ("9", {'layout': 'columns'})]
+
+groups = [Group(name, **kwargs) for name, kwargs in group_names]
+
+for i, (name, kwargs) in enumerate(group_names, 1):
+    #keys.extend([
+        ## mod1 + letter of group = switch to group
+        #Key([mod], str(i), lazy.group[str(i)].toscreen(),
+            #desc="Switch to group {}".format(str(i))),
+#
+        ## mod1 + shift + letter of group = switch to & move focused window to group
+        #Key([mod, "shift"], str(i), lazy.window.togroup(str(i), switch_group=False),
+            #desc="Switch to & move focused window to group {}".format(str(i))),
+        #Key([mod, "control", "shift"], str(i), lazy.window.togroup(str(i), switch_group=True),
+            #desc="Switch to & move focused window to group {}".format(str(i))),
+        
+    # Switch to another group
+    keys.append(Key([mod], str(i), lazy.group[name].toscreen())),
+    # Send current window to another group
+    keys.append(Key([mod, "shift"], str(i), lazy.window.togroup(name))),
+    keys.append(Key([mod, "control", "shift"], str(i), lazy.window.togroup(name), lazy.group[name].toscreen())),
+    #])
 
 border_color = '#5b5f7a'
 border_color_inactive = '#282a38'
@@ -322,8 +369,22 @@ screens = [
                     this_screen_border=grey_fg_color,
                     inactive=other_fg_color,
                     #highlight_method="block",
-                    disable_drag=True,
-                    rounded=True),
+                    font = 'Symbols Nerd Font',
+                    fontsize = 18,
+                    padding = 4,
+                    margin_y = 5,
+                    margin_x = 2,
+                    #padding_y = 5,
+                    #padding_x = 3,
+                    borderwidth = 3,
+                    highlight_method = 'line',
+                    highlight_color = ['3d3f4b', '3d3f4b'],
+                    border = '3d3f4b',
+                    center_aligned = True,
+                    #hide_unused = True,
+                    markup = False,
+                    rounded = False,
+                    disable_drag=True),
                 widget.Prompt(),
 
                 widget.WindowName(),
@@ -336,19 +397,20 @@ screens = [
 
                 # Clock
                 widget.TextBox("Current time:", foreground=fg_color),
-                widget.Clock(format='%I:%M:%S %p %a %d/%m/%Y'),
+                #widget.Clock(format='%I:%M:%S %p %a %d/%m/%Y'),
+                widget.Clock(format='%A, %I:%M:%S %p, %d/%m/%Y'),
 
                 # Layout
-                widget.Sep(),
-                widget.TextBox("Current layout:", foreground=fg_color),
-                widget.CurrentLayout(),
+                #widget.Sep(),
+                #widget.TextBox("Current layout:", foreground=fg_color),
+                #widget.CurrentLayout(),
 
                 # Keyboard layout
-                #widget.Sep(),
+                widget.Sep(),
                 #widget.KeyboardLayout(configured_keyboards=['us', 'il']),
-                #widget.TextBox("Keyboard layout:", foreground=fg_color),
+                widget.TextBox("Keyboard layout:", foreground=fg_color),
                 #widget.TextBox(os.system('xkb-switch')),
-                #widget.KeyboardLayout(configured_keyboards=['us', 'il']),
+                widget.KeyboardLayout(configured_keyboards=['us', 'il']),
 
                 # Volume
                 widget.Sep(),
@@ -362,7 +424,7 @@ screens = [
 
                 #widget.QuickExit(),
             ],
-            24,
+            30,
             background=bg_color,
             opacity=0.925,
             #opacity=0.85,
