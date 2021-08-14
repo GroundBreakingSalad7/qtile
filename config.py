@@ -26,11 +26,13 @@
 
 from typing import List  # noqa: F401
 
-from libqtile import bar, layout, widget, qtile
+from libqtile import bar, layout, widget, qtile, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger
 from libqtile.notify import notifier
+from libqtile.utils import send_notification
+from libqtile.widget import notify
 #from libqtile.utils import guess_terminal
 import os # To run shell commands
 import weakref # To control volume
@@ -43,20 +45,20 @@ logger.warning("Error")
 
 terminal = 'st'
 terminal_session = f'{terminal} -e tmux'
-file = f'{terminal} -e vifm'
+file = f'{terminal} -T vifm -e vifmrun'
 otherfilemanager = 'nautilus -w'
 browser = 'firefox'
 incognitobrowser = 'firefox --private-window'
 notes = f'{terminal} -e joplin'
 dmenu = 'dmenu_run -i -fn "Ploni ML V2 AAA:bold:pixelsize=18"'
 torrent = 'dmenu-torrent'
-create_doc = '/home/yoavkonak/.scripts/create-latex-document.sh'
+create_doc = 'create-latex-document.sh'
 password = 'dmenu_pass 18'
-screenshot = 'flameshot gui -p /home/yoavkonak/'
+screenshot = 'flameshot gui -p .'
 social = 'signal-desktop'
 music = f'{terminal} -e ncmpcpp'
 top = f'{terminal} -e gotop'
-lock = '/home/yoavkonak/.scripts/lock.sh'
+lock = 'lock.sh'
 fancylock = 'i3lock-fancy-dualmonitor -f Ploni-ML-v2-AAA-Light'
 toggle_hebrew = '~/.config/qtile/scripts/toggle_hebrew.sh'
 # Music
@@ -248,30 +250,33 @@ for i in groups:
 
 border_color = '#5b5f7a'
 border_color_inactive = '#282a38'
-default_margin=0
+default_margin=5
+default_border_width=3
 
 layouts = [
     layout.Columns(margin=default_margin,
         border_focus=border_color,
         border_focus_stack='#9fa5ce',
         border_normal=border_color_inactive,
-        border_normal_stack=border_color_inactive),
+        border_normal_stack=border_color_inactive,
+        border_width=default_border_width),
+    
+    layout.Bsp(margin=default_margin,
+        border_focus=border_color,
+        border_normal=border_color_inactive),
     # layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     layout.Floating(border_focus=border_color,
         border_normal=border_color_inactive,
-        border_width=2),
+        border_width=default_border_width),
     # layout.Matrix(),
     #layout.MonadTall(),
-    layout.Bsp(margin=default_margin,
-        border_focus=border_color,
-        border_normal=border_color_inactive),
     # layout.MonadWide(),
     # layout.RatioTile(),
     layout.Tile(border_focus=border_color,
         border_normal=border_color_inactive,
-        border_width=2),
+        border_width=default_border_width),
     # layout.TreeTab(),
     # layout.VerticalTile(),
     # layout.Zoomy(),
@@ -338,7 +343,7 @@ screens = [
                 widget.TextBox("Current layout:", foreground=fg_color),
                 widget.CurrentLayout(),
 
-                ## Keyboard layout
+                # Keyboard layout
                 #widget.Sep(),
                 #widget.KeyboardLayout(configured_keyboards=['us', 'il']),
                 #widget.TextBox("Keyboard layout:", foreground=fg_color),
@@ -385,7 +390,7 @@ mouse = [
 ############################################### BLUE ##########################################
 # FAVORITE
 #####    wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/vincentiu-solomon-Z4wF0h47fy8-unsplash.jpg'
-wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # Yellow
+#                  wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # Yellow
 #wallpaper_choice = '~/.config/qtile/Wallpapers/elena-prokofyeva-NDuPLKYRXQU-unsplash.jpg' # blue
 
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/leon-overweel-GZd3l4Yxdxs-unsplash.jpg'
@@ -393,7 +398,7 @@ wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # Yell
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/jeremy-bishop-9pRjY4d7nJE-unsplash.jpg'
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/krisztian-tabori-nZGNVOvEYio-unsplash.jpg'
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/mar-bustos-ARVFsI-32Uk-unsplash.jpg'
-wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/quino-al-JFeOy62yjXk-unsplash.jpg'
+#                  wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/quino-al-JFeOy62yjXk-unsplash.jpg'
 ## Purple
 # wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/kai-oberhauser-BKAaLmT0tIs-unsplash.jpg'
 # wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arch.png'
@@ -401,8 +406,10 @@ wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/quino-al-JFeOy62yjXk-uns
 # wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arunas-naujokas-wWeu12lTDbU-unsplash.jpg'
 #wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/oleg-chursin-vaPoJZB9Mzg-unsplash.jpg'
 # wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/james-donovan-kFHz9Xh3PPU-unsplash.jpg'
-wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/waranont-joe-T7qyLNPwgKA-unsplash.jpg'
+#                  wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/waranont-joe-T7qyLNPwgKA-unsplash.jpg'
+wallpaper_choice = '~/.config/qtile/Wallpapers/fakurian-design-5TL-QhXxQLs-unsplash.jpg'
 
+os.system('feh --bg-fill ' + wallpaper_choice)
 os.system('feh --bg-fill ' + wallpaper_choice)
 
 # Run on startup

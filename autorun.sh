@@ -7,6 +7,7 @@ picom --config ~/.config/qtile/picom.conf &
 flameshot &
 xfce4-power-manager &
 nm-applet --indicator &
+nextcloud &
 
 # Keyboard stuff
 ~/.Xkeys
