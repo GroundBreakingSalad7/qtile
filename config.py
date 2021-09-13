@@ -254,9 +254,9 @@ group_names = [("", {'layout': 'columns'}),
                ("", {'layout': 'columns'}),
                ("", {'layout': 'columns'}),
                #("", {'layout': 'columns'}),
+               ("ﱮ", {'layout': 'columns'}),
                ("", {'layout': 'columns'}),
                #("", {'layout': 'columns'}),
-               ("ﱮ", {'layout': 'columns'}),
                ("ﱘ", {'layout': 'columns'}),
                ("", {'layout': 'columns'}),
                #("", {'layout': 'columns'}),
@@ -297,7 +297,7 @@ for i, (name, kwargs) in enumerate(group_names, 1):
 
 border_color = '#5b5f7a'
 border_color_inactive = '#282a38'
-default_margin=5
+default_margin=8
 default_border_width=3
 
 layouts = [
@@ -355,6 +355,7 @@ screens = [
                 
                 widget.TextBox("Qtile", foreground=fg_color,
                     mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(terminal_session)}),
+                    #mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn('/home/yoav/.scripts/lock.sh')}),
 
                 #widget.Sep(
                     #linewidth = 0,
@@ -396,9 +397,22 @@ screens = [
                 ),
 
                 # Clock
-                widget.TextBox("Current time:", foreground=fg_color),
-                #widget.Clock(format='%I:%M:%S %p %a %d/%m/%Y'),
-                widget.Clock(format='%A, %I:%M:%S %p, %d/%m/%Y'),
+                #widget.TextBox(
+                        #text = '祥  ',
+                        #font = 'Symbols Nerd Font',
+                        #foreground = fg_color,
+                        #padding = 0
+                        #),
+                widget.TextBox(
+                        "Current time:",
+                        foreground = fg_color,
+                        padding = 0
+                        ),
+                widget.Clock(
+                        format='%A, %I:%M:%S %p, %d/%m/%Y',
+                        #background = other_fg_color,
+                        #padding = 6
+                        ),
 
                 # Layout
                 #widget.Sep(),
@@ -424,7 +438,7 @@ screens = [
 
                 #widget.QuickExit(),
             ],
-            30,
+            28,
             background=bg_color,
             opacity=0.925,
             #opacity=0.85,
@@ -442,36 +456,7 @@ mouse = [
 ]
 
 # Set wallpaper
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/arthur-rachbauer.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/boris-baldinger-VEkIsvDviSs-unsplash.jpg'
-
-############################################### BLUE ##########################################
-#  wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/david-clode-EknN2SI7X80-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/matt-hardy-6ArTTluciuA-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/rene-padillo-GyUoN-opIMM-unsplash.jpg'
-############################################### BLUE ##########################################
-# FAVORITE
-#####    wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/vincentiu-solomon-Z4wF0h47fy8-unsplash.jpg'
-#                  wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/andrew-clifton.jpg' # Yellow
-#wallpaper_choice = '~/.config/qtile/Wallpapers/elena-prokofyeva-NDuPLKYRXQU-unsplash.jpg' # blue
-
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/leon-overweel-GZd3l4Yxdxs-unsplash.jpg'
-##wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/ian-dooley-DuBNA1QMpPA-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/jeremy-bishop-9pRjY4d7nJE-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/krisztian-tabori-nZGNVOvEYio-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/mar-bustos-ARVFsI-32Uk-unsplash.jpg'
-#                  wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/quino-al-JFeOy62yjXk-unsplash.jpg'
-## Purple
-# wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/kai-oberhauser-BKAaLmT0tIs-unsplash.jpg'
-# wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arch.png'
-# wallpaper_choice = '~/.config/qtile/Wallpapers/arch_dracula.png'
-# wallpaper_choice = '~/.config/qtile/Wallpapers/Purple/arunas-naujokas-wWeu12lTDbU-unsplash.jpg'
-#wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/oleg-chursin-vaPoJZB9Mzg-unsplash.jpg'
-# wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/james-donovan-kFHz9Xh3PPU-unsplash.jpg'
-#                  wallpaper_choice = '~/.config/qtile/Wallpapers/Unsplash/waranont-joe-T7qyLNPwgKA-unsplash.jpg'
 wallpaper_choice = '~/.config/qtile/Wallpapers/fakurian-design-5TL-QhXxQLs-unsplash.jpg'
-
-os.system('feh --bg-fill ' + wallpaper_choice)
 os.system('feh --bg-fill ' + wallpaper_choice)
 
 # Run on startup
